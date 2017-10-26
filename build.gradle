@@ -1,0 +1,274 @@
+import org.apache.tools.ant.filters.FixCrLfFilter
+import org.apache.tools.ant.filters.ReplaceTokens
+
+import static org.gradle.api.logging.LogLevel.INFO
+
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+    }
+}
+
+plugins {
+    id "org.sonarqube" version "2.2.1"
+    id 'net.ltgt.apt' version '0.9'
+    id "net.foragerr.jmeter" version "1.0.7-3.0-BETA"
+    id "com.github.hierynomus.license" version "0.14.0"
+}
+
+project.logging.setLevelInternal(INFO)
+
+project.ext {
+    projectGroup = 'gov.ca.cwds.template'
+    projectDockerGroup = 'cwds'
+    projectDockerAppName = 'template-api'
+    projectMajorVersion = '0.4.3'
+    projectVersion = projectMajorVersion + '-SNAPSHOT'
+    //projectVersion = projectMajorVersion
+    dropwizardVersion = '1.1.0'
+    coreApiVersion = '3.6.438'
+    mapstructVersion = '1.1.0.Final'
+    mainClass = 'gov.ca.cwds.template.TemplateApiApplication'
+}
+
+group projectGroup
+version projectVersion
+
+repositories {
+    mavenLocal()
+//    maven {
+//        url "http://sonar.dev.cwds.io:8081/artifactory/repo"
+//    }
+    mavenCentral()
+}
+
+apply plugin: "jacoco"
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'docker'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'maven-publish'
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "${name}"
+        property "sonar.projectKey", "${group}:${name}"
+        property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${project.buildDir}/jacocoHtml"
+    }
+    
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'org/hibernate/*'
+            ])
+        })
+    }
+}
+
+jmeter {
+    jmLog = file("${project.buildDir}/jmeter/jmeter.log")
+}
+
+configurations.all {
+    // Check for updates every  build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+dependencies {
+    
+// Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
+// Exclude transitive dependencies.
+// REMOVE EXCLUSION for shiro-security and MOCK class PerryAccount
+    compile (group: 'gov.ca.cwds.api', name: 'api-core', version: coreApiVersion , changing: true) {
+        exclude group: 'org.glassfish.jersey.core'
+        exclude group: 'gov.ca.cwds.api', module:'shiro-security'
+    }
+
+    compile group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.1'
+    compile group: 'org.slf4j', name: 'slf4j-ext', version: '1.7.25'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile group: 'org.secnod.dropwizard', name: 'dropwizard-shiro', version: '0.2.0'
+
+    compile (
+            'io.dropwizard:dropwizard-core:' + dropwizardVersion,
+            'io.dropwizard:dropwizard-hibernate:' + dropwizardVersion,
+            'org.postgresql:postgresql:9.4.1208.jre7',
+            'io.dropwizard:dropwizard-testing:' + dropwizardVersion
+    )
+    
+    compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.2.8.Final'
+
+    compile 'org.mapstruct:mapstruct-jdk8:' + mapstructVersion
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
+    compile group: 'org.apache.commons', name: 'commons-compress', version: '1.14'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'org.liquibase', name: 'liquibase-core', version: '3.5.3'
+    
+    compile group: 'com.github.javafaker', name: 'javafaker', version: '0.13'
+    compile(group: "com.github.java-json-tools", name: "json-schema-validator", version: "2.2.8")
+
+    testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+//    testCompile group: 'gov.ca.cwds.api', name: 'jwt-security', version: '0.25.77'
+    testCompile 'org.mockito:mockito-core:2.0.54-beta'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-junit', version: '2.0.0.0'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.194'
+    testCompile group: 'org.apache.velocity', name: 'velocity', version: '1.7'
+    testCompile('org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-grizzly2:2.23.2') {
+        exclude group: 'javax.servlet', module: 'javax.servlet-api'
+        exclude group: 'junit', module: 'junit'
+    }
+    
+    apt 'org.mapstruct:mapstruct-processor:' + mapstructVersion
+}
+
+mainClassName = mainClass
+
+task convertEntrypointToLF (type: Copy) {
+    from projectDir
+    into project.buildDir
+    include 'entrypoint.sh'
+    filter(FixCrLfFilter.class, eol:FixCrLfFilter.CrLf.newInstance("lf"))
+}
+
+shadowJar {
+    classifier = 'dist'
+    baseName = 'template-api'
+    mergeServiceFiles()
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    version = ''
+}
+
+run {
+    args 'server', './config/template-api.yml'
+}
+
+test {
+    systemProperty 'java.net.preferIPv4Stack', 'true'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}
+
+
+task integrationTest(type: Test, dependsOn: testClasses) {
+    // URL where integration tests will be pointed to (may be changed in gradle.properties)
+    systemProperty 'api.url', project.property('api.url')
+}
+
+task smokeTest(type: Test) {
+    // URL where smoke tests will be pointed to (may be changed in gradle.properties)
+    systemProperty 'api.url', project.property('api.url')
+    include 'SmokeTestSuite.class'
+}
+
+task copyConfig(type: Copy) {
+    from 'config'
+    into 'build/docker/config'
+}
+
+task copyDist(type: Copy, dependsOn: shadowJar) {
+    from 'build/libs'
+    into 'build/docker/libs'
+}
+
+
+def releaseDocker = System.getProperty("ReleaseDocker")
+def buildNumber = System.getProperty('BuildNumber')
+def dockerTag = (releaseDocker == 'true' && buildNumber != null  ? projectMajorVersion + '_' + buildNumber + '-RC' : projectVersion )
+
+task readArguments() {
+    doLast{
+        println "ReleaseDocker: " + releaseDocker
+        println "Build: " + buildNumber
+        println "Docker Tag: " + dockerTag
+    }
+}
+
+
+task apiDocker(type: Docker,  dependsOn: [copyConfig, copyDist] ) {
+    dockerfile = "Dockerfile"
+    project.group = projectDockerGroup
+    applicationName = projectDockerAppName
+    tagVersion = dockerTag
+}
+
+task createDockerImage(type:Exec, dependsOn: [convertEntrypointToLF, shadowJar]) {
+    commandLine 'docker',  'build',  '-t',  'cwds/template-api', '.'
+}
+
+task tagDockerImage(type:Exec, dependsOn: createDockerImage) {
+    commandLine 'docker',  'tag',  'cwds/template-api',  "cwds/template-api:$dockerTag"
+}
+
+task pushDockerLatest(type:Exec, dependsOn: createDockerImage) {
+    commandLine 'docker',  'push',  'cwds/template-api:latest'
+}
+
+task pushDockerVersionTagged(type:Exec, dependsOn: tagDockerImage) {
+    commandLine 'docker',  'push',  "cwds/template-api:$dockerTag"
+}
+
+task dropDockerImage(type:Exec) {
+    commandLine 'docker',  'rmi',  "cwds/template-api:$dockerTag"
+    commandLine 'docker',  'rmi',  "cwds/template-api:latest"
+
+}
+
+task publishDocker(dependsOn: [pushDockerVersionTagged, pushDockerLatest]) {
+    doLast {
+        println 'Published'
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs = [
+            '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
+}
+
+processResources {
+    filter(ReplaceTokens, tokens:[
+            'build.version' : projectVersion,
+            'build.number' : (System.getenv("BUILD_NUMBER") ?: "IDE")
+    ])
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            groupId projectGroup
+            artifactId rootProject.name
+            version version + ((System.properties.getProperty('build') != null) ? '.' + System.properties.getProperty('build') : '')
+        }
+    }
+    repositories {
+        //mavenLocal()
+        maven {
+            url "http://sonar.dev.cwds.io:8081/artifactory/repo"
+        }
+    }
+}
