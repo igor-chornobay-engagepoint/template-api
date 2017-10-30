@@ -33,7 +33,7 @@ project.ext {
     projectVersion = projectMajorVersion + '-SNAPSHOT'
     //projectVersion = projectMajorVersion
     dropwizardVersion = '1.1.0'
-    coreApiVersion = '3.6.438'
+    coreApiVersion = '0.4.4-SNAPSHOT'
     mapstructVersion = '1.1.0.Final'
     mainClass = 'gov.ca.cwds.template.TemplateApiApplication'
 }
@@ -93,10 +93,8 @@ dependencies {
     
 // Dropwizard-guice 1.0.0.2 conflicts with jersey-client 2.25.
 // Exclude transitive dependencies.
-// REMOVE EXCLUSION for shiro-security and MOCK class PerryAccount
     compile (group: 'gov.ca.cwds.api', name: 'api-core', version: coreApiVersion , changing: true) {
         exclude group: 'org.glassfish.jersey.core'
-        exclude group: 'gov.ca.cwds.api', module:'shiro-security'
     }
 
     compile group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
