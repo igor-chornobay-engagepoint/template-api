@@ -11,7 +11,7 @@ echo "config file: $TEMPLATE_API_CONFIG"
 
 
 if [ -f /opt/newrelic/newrelic.yml ]; then
-    java -javaagent:/opt/newrelic/newrelic.jar  ${JAVA_OPTS} -jar forms-api.jar server $TEMPLATE_API_CONFIG
+    java -javaagent:/opt/newrelic/newrelic.jar  ${JAVA_OPTS} -jar template-api.jar server $TEMPLATE_API_CONFIG
 else
-    java  ${JAVA_OPTS} -jar forms-api.jar server $TEMPLATE_API_CONFIG
+    java  ${JAVA_OPTS} -jar template-api.jar server $TEMPLATE_API_CONFIG
 fi

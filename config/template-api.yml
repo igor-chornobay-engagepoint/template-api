@@ -5,6 +5,12 @@ server:
   applicationConnectors:
   - type: http
     port: 8080
+  - type: https
+    port: 8443
+    keyStorePath: ${KEY_STORE_FILE:-./config/testKeyStore.jks}
+    keyStorePassword: ${KEY_STORE_PASSWORD:-testPass}
+    keyStoreType: JKS
+    supportedProtocols: [TLSv1, TLSv1.1, TLSv1.2]
   adminConnectors:
   - type: http
     port: 9081
@@ -18,7 +24,7 @@ shiro:
 swagger:
   templateName: swagger.mustache
   assetsPath: /static
-  resourcePackage: gov.ca.cwds.templateate.web.rest
+  resourcePackage: gov.ca.cwds.template.web.rest
   title: CWDS TEMPLATE API
   description: RESTful TEMPLATE API.
   logo: images/CWDS-API-Logo-Horizontal.png
@@ -27,29 +33,6 @@ swagger:
   showSwagger: ${SHOW_SWAGGER:-true}
   jsonUrl: ${SWAGGER_JSON_URL:-http://localhost:8080/swagger.json}
   callbackUrl: ${SWAGGER_CALLBACK_URL:-http://localhost:8080/swagger}
-
-upgardeDbOnStart: ${UPGRADE_DB_ON_START:-true}
-
-templateDataSourceFactory:
-  driverClass: org.postgresql.Driver
-  user: ${DB_TEMPLATE_USER:-postgres}
-  password: ${DB_TEMPLATE_PASSWORD:-postgres}
-  url: ${DB_TEMPLATE_JDBC_URL:-jdbc:postgresql://localhost:5432/postgres}
-  validationQuery: "select count(*) from ${DB_TEMPLATE_DEFAULT_SCHEMA:-template}.template_instance"
-  logValidationErrors: true
-  initialSize: ${DB_TEMPLATE_CP_INITIAL_SIZE:-2}
-  minSize: ${DB_TEMPLATE_CP_MIN_SIZE:-2}
-  maxSize: ${DB_TEMPLATE_CP_MAX_SIZE:-8}
-  minIdleTime: 1 minute
-  properties:
-      hibernate.dialect: gov.ca.cwds.templateate.persistence.hibernate.dialect.JsonbSupportPostgreSQL9Dialect
-      hibernate.id.new_generator_mappings: false
-      hibernate.show_sql: true
-      hibernate.default_schema: ${DB_TEMPLATE_DEFAULT_SCHEMA:-template}
-      hibernate.cache.use_second_level_cache: false
-      hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
-      hibernate.cache.use_query_cache: false
-      hibernate.connection.autocommit: false
 
 webSecurity:
   httpResponseSecurityHeaders:

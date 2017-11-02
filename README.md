@@ -17,21 +17,9 @@ NOTE : At this time there is not a publicy available link to the documentation, 
 ### Application Configuration Parameters
 - APP_VERSION -- Version of application
 
-### Data Stores Configuration Parameters
-
-In order for the TEMPLATE API successfully connect to the database the following environment variables are required to be set:
-
-#### Postgres - NS database
-
-- DB_TEMPLATE_USER -- the NS database username
-- DB_TEMPLATE_PASSWORD -- the NS database password
-- DB_TEMPLATE_JDBC_URL -- the NS database URL in Java Database Connectivity format
-- DB_TEMPLATE_CP_INITIAL_SIZE -- the NS connections pool iniitial size (default: 2) 
-- DB_TEMPLATE_CP_MIN_SIZE -- the NS connections pool minimum size (default: 2)
-- DB_TEMPLATE_CP_MAX_SIZE -- the NS connections pool maximum size (default: 8)
-
-#### Upgarde Data Base on Start
-- UPGRADE_DB_ON_START -- if "true" then application starts Liquibase Scripts for upgrading DB to the latest state (default true)  
+### SSL Configuration Parameters
+- KEY_STORE_FILE -- Path to keystore file
+- KEY_STORE_PASSWORD -- Keystore password
 
 #### Swagger Configuration Parameters**
 - LOGIN_URL -- Login URL

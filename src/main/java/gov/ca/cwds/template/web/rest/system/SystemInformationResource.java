@@ -79,8 +79,6 @@ public class SystemInformationResource {
 
     SortedMap<String, HealthCheck.Result> healthChecks = environment.healthChecks()
         .runHealthChecks();
-    systemInformationDTO.setTemplateDb(
-        getHealthCheckResultDTO(healthChecks.get(Constants.UnitOfWork.TEMPLATE_UNIT_OF_WORK)));
     systemInformationDTO.setDeadlocks(getHealthCheckResultDTO(healthChecks.get("deadlocks")));
 
     return systemInformationDTO;

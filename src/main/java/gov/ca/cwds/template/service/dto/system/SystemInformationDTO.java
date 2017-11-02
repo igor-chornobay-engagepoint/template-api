@@ -14,7 +14,6 @@ public class SystemInformationDTO extends BaseDTO {
   private String application;
   private String version;
   private String buildNumber;
-  private HealthCheckResultDTO templateDb;
   private HealthCheckResultDTO deadlocks;
 
   public String getApplication() {
@@ -39,14 +38,6 @@ public class SystemInformationDTO extends BaseDTO {
 
   public void setBuildNumber(String buildNumber) {
     this.buildNumber = buildNumber;
-  }
-
-  public HealthCheckResultDTO getTemplateDb() {
-    return templateDb;
-  }
-
-  public void setTemplateDb(HealthCheckResultDTO templateDb) {
-    this.templateDb = templateDb;
   }
 
   public HealthCheckResultDTO getDeadlocks() {

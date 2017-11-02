@@ -1,8 +1,6 @@
 package gov.ca.cwds.template.inject;
 
 import com.google.inject.AbstractModule;
-import gov.ca.cwds.template.service.TemplateInstancesCollectionService;
-import gov.ca.cwds.template.service.TemplateInstancesService;
 
 /**
  * Identifies all TEMPLATE_UNIT_OF_WORK API business layer (services) classes available for dependency
@@ -21,8 +19,6 @@ public class ServicesModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(TemplateInstancesService.class);
-    bind(TemplateInstancesCollectionService.class);
   }
 
 }

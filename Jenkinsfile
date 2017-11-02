@@ -24,13 +24,13 @@ def notifyBuild(String buildStatus, Exception e) {
 
   // Send notifications
 
-  slackSend channel: "#forms-api", baseUrl: 'https://hooks.slack.com/services/', tokenCredentialId: 'slackmessagetpt2', color: colorCode, message: summary
+  slackSend channel: "#template-api", baseUrl: 'https://hooks.slack.com/services/', tokenCredentialId: 'slackmessage', color: colorCode, message: summary
   emailext(
       subject: subject,
       body: details,
       attachLog: true,
       recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-      to: "Leonid.Marushevskiy@osi.ca.gov, Alex.Kuznetsov@osi.ca.gov, Oleg.Korniichuk@osi.ca.gov, alexander.serbin@engagepoint.com, vladimir.petrusha@engagepoint.com"
+      to: "team emails"
     )
 }
 
@@ -47,7 +47,7 @@ node ('dora-slave'){
       ]), pipelineTriggers([pollSCM('H/5 * * * *')])])
   try {
    stage('Preparation') {
-		  git branch: '$branch', url: 'https://github.com/ca-cwds/forms-api.git'
+		  git branch: '$branch', url: 'https://github.com/ca-cwds/template-api.git'
 		  rtGradle.tool = "Gradle_35"
 		  rtGradle.resolver repo:'repo', server: serverArti
 		  rtGradle.useWrapper = true
@@ -85,22 +85,22 @@ node ('dora-slave'){
 	}
 	stage('Clean Workspace') {
 		buildInfo = rtGradle.run buildFile: 'build.gradle', tasks: 'dropDockerImage'
-		archiveArtifacts artifacts: '**/forms-api-*.jar,readme.txt', fingerprint: true
+		archiveArtifacts artifacts: '**/template-api-*.jar,readme.txt', fingerprint: true
 		cleanWs()
 	}
 	stage('Deploy Application'){
 	   checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '433ac100-b3c2-4519-b4d6-207c029a103b', url: 'git@github.com:ca-cwds/de-ansible.git']]]
-	   sh 'ansible-playbook -e NEW_RELIC_AGENT=$USE_NEWRELIC  -e API_VERSION=$APP_VERSION -i $inventory deploy-formsapi.yml --vault-password-file ~/.ssh/vault.txt -vv'
+	   sh 'ansible-playbook -e NEW_RELIC_AGENT=$USE_NEWRELIC  -e API_VERSION=$APP_VERSION -i $inventory deploy-templateapi.yml --vault-password-file ~/.ssh/vault.txt -vv'
 	   cleanWs()
 	   sleep (20)
   }
   stage('Smoke Tests') {
-      git branch: 'development', url: 'https://github.com/ca-cwds/forms-api.git'
+      git branch: 'development', url: 'https://github.com/ca-cwds/template-api.git'
       buildInfo = rtGradle.run buildFile: 'build.gradle', tasks: 'smokeTest --stacktrace'
       publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/tests/smokeTest', reportFiles: 'index.html', reportName: 'Smoke Tests Report', reportTitles: 'Smoke tests summary'])
   }
   stage('Integration Tests') {
-      git branch: 'development', url: 'https://github.com/ca-cwds/forms-api.git'
+      git branch: 'development', url: 'https://github.com/ca-cwds/template-api.git'
       buildInfo = rtGradle.run buildFile: 'build.gradle', tasks: 'integrationTest --stacktrace'
       publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/tests/integrationTest', reportFiles: 'index.html', reportName: 'Integration Tests Report', reportTitles: 'Integration tests summary'])
       cleanWs()

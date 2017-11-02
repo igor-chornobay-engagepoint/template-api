@@ -29,7 +29,7 @@ project.ext {
     projectGroup = 'gov.ca.cwds.template'
     projectDockerGroup = 'cwds'
     projectDockerAppName = 'template-api'
-    projectMajorVersion = '0.4.3'
+    projectMajorVersion = '0.1.0'
     projectVersion = projectMajorVersion + '-SNAPSHOT'
     //projectVersion = projectMajorVersion
     dropwizardVersion = '1.1.0'
