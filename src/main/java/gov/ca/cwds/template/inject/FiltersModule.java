@@ -12,7 +12,7 @@ import gov.ca.cwds.rest.filters.WebSecurityFilter;
  * <p> Register filters her with Guice and configure them in {@link TemplateApiApplication}, method
  * registerFilters. </p>
  *
- * @author CWDS API Team
+ * @author CWDS TPT-3 Team
  */
 public class FiltersModule extends AbstractModule {
 

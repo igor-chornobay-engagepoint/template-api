@@ -6,7 +6,7 @@ import gov.ca.cwds.rest.services.TypedCrudsService;
 import java.io.Serializable;
 
 /**
- * @author CWDS TPT-2 Team
+ * @author CWDS TPT-3 Team
  */
 public class TypedCrudServiceAdapter<P extends Serializable, Q extends Request, S extends Response>
     implements TypedCrudsService<P, Q, S> {

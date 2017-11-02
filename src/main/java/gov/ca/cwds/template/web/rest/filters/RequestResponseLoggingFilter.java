@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author CWDS API Team
+ * @author CWDS TPT-3 Team
  */
 @Provider
 public class RequestResponseLoggingFilter implements Filter {

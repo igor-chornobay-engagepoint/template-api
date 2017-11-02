@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author CWDS TPT-2 Team
+ * @author CWDS TPT-3 Team
  */
 public abstract class BaseTemplateApiApplication<T extends TemplateApiConfiguration> extends
     BaseApiApplication<T> {

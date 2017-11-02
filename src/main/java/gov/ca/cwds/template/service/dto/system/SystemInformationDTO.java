@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import gov.ca.cwds.template.service.dto.BaseDTO;
 
 /**
- * @author CWDS CALS API Team
+ * @author CWDS TPT-3 Team
  */
 @SuppressWarnings("squid:S2160")
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)

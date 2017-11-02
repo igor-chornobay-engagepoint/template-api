@@ -5,7 +5,7 @@ import gov.ca.cwds.rest.api.Response;
 import java.util.Collection;
 
 /**
- * @author CWDS TPT-2
+ * @author CWDS TPT-3 Team
  */
 @SuppressWarnings("squid:S2160") //reflection equals hashcode is used in superclass
 public class CollectionDTO<T extends BaseDTO> extends BaseDTO implements Response {

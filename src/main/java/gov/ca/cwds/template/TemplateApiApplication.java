@@ -5,7 +5,7 @@ import gov.ca.cwds.template.inject.ApplicationModule;
 import io.dropwizard.setup.Bootstrap;
 
 /**
- * @author CWDS TPT-2 Team
+ * @author CWDS TPT-3 Team
  */
 
 public class TemplateApiApplication extends BaseTemplateApiApplication<TemplateApiConfiguration> {

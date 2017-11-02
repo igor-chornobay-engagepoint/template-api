@@ -13,7 +13,7 @@ import gov.ca.cwds.rest.resources.TypedServiceBackedResourceDelegate;
  * Identifies all TEMPLATE_UNIT_OF_WORK API domain resource classes available for dependency injection
  * by Guice.
  *
- * @author TPT-2 Team
+ * @author CWDS TPT-3 Team
  */
 public class ResourcesModule extends AbstractModule {
 

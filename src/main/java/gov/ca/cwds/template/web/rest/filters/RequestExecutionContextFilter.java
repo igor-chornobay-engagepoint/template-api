@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * Store common info when an HTTP request begins. Can be merged with {@link
  * PerryAuthenticatingFilter} when ready. See story #147865633.
  *
- * @author CWDS API Team
+ * @author CWDS TPT-3 Team
  * @see RequestExecutionContextImpl
  */
 @Provider

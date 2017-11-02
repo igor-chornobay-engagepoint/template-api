@@ -11,7 +11,7 @@ import io.dropwizard.setup.Bootstrap;
 /**
  * Bootstraps and configures the CWDS RESTful TEMPLATE_UNIT_OF_WORK-API application.
  *
- * @author CWDS TPT-2 Team
+ * @author CWDS TPT-3 Team
  */
 
 public class ApplicationModule<T extends TemplateApiConfiguration> extends AbstractModule {

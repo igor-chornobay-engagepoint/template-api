@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author CWDS CALS API Team
+ * @author CWDS TPT-3 Team
  */
 @SuppressWarnings("squid:S2160")
 public class HealthCheckResultDTO extends BaseDTO {

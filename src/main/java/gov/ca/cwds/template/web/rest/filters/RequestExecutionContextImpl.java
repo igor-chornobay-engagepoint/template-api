@@ -17,7 +17,7 @@ import org.apache.shiro.subject.Subject;
  * Common information carrier for all requests. Includes the request start time stamp and user
  * information. Each request is separated by thread local.
  *
- * @author CWDS API Team
+ * @author CWDS TPT-3 Team
  */
 class RequestExecutionContextImpl implements RequestExecutionContext {
 

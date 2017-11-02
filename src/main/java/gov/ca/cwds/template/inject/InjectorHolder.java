@@ -4,7 +4,7 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 
 /**
- * @author CWDS TPT-2 Team
+ * @author CWDS TPT-3 Team
  */
 public final class InjectorHolder {
 

@@ -6,7 +6,7 @@ import com.google.inject.Provider;
 import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 
 /**
- * @author CWDS TPT-2 Team
+ * @author CWDS TPT-3 Team
  */
 
 public abstract class AbstractInjectProvider<T> implements Provider<T> {

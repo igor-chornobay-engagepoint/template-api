@@ -22,7 +22,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * @author CWDS TPT-2 Team
+ * @author CWDS TPT-3 Team
  */
 @Api(value = SYSTEM_INFORMATION_PATH)
 @Path(SYSTEM_INFORMATION_PATH)
