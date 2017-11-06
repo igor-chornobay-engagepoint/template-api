@@ -53,7 +53,7 @@ public class DataAccessModule extends AbstractModule {
 
   @Provides
   @TemplateSessionFactory
-  SessionFactory calsnsSessionFactory() {
+  SessionFactory templateSessionFactory() {
     return templateHibernateBundle.getSessionFactory();
   }
 

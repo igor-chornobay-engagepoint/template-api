@@ -25,8 +25,8 @@ public abstract class BaseTemplateApiApplication<T extends TemplateApiConfigurat
     BaseApiApplication<T> {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseTemplateApiApplication.class);
-  private static final String LIQUIBASE_FORMS_DATABASE_CREATE_SCHEMA_XML = "liquibase/template_schema.xml";
-  private static final String LIQUIBASE_FORMS_DATABASE_MASTER_XML = "liquibase/template_database_master.xml";
+  private static final String LIQUIBASE_DATABASE_CREATE_SCHEMA_XML = "liquibase/template_schema.xml";
+  private static final String LIQUIBASE_DATABASE_MASTER_XML = "liquibase/template_database_master.xml";
   private static final String HIBERNATE_DEFAULT_SCHEMA_PROPERTY_NAME = "hibernate.default_schema";
 
   @Override
@@ -86,13 +86,17 @@ public abstract class BaseTemplateApiApplication<T extends TemplateApiConfigurat
     LOG.info("Upgrading DB...");
 
     DataSourceFactory formsDataSourceFactory = configuration.getTemplateDataSourceFactory();
-    DatabaseHelper databaseHelper = new DatabaseHelper(formsDataSourceFactory.getUrl(),
+    DatabaseHelper databaseHelper = new DatabaseHelper(
+        formsDataSourceFactory.getUrl(),
         formsDataSourceFactory.getUser(),
-        formsDataSourceFactory.getPassword());
+        formsDataSourceFactory.getPassword()
+    );
     try {
-      databaseHelper.runScript(LIQUIBASE_FORMS_DATABASE_CREATE_SCHEMA_XML);
-      databaseHelper.runScript(LIQUIBASE_FORMS_DATABASE_MASTER_XML,
-          formsDataSourceFactory.getProperties().get(HIBERNATE_DEFAULT_SCHEMA_PROPERTY_NAME));
+      databaseHelper.runScript(LIQUIBASE_DATABASE_CREATE_SCHEMA_XML);
+      databaseHelper.runScript(
+          LIQUIBASE_DATABASE_MASTER_XML,
+          formsDataSourceFactory.getProperties().get(HIBERNATE_DEFAULT_SCHEMA_PROPERTY_NAME)
+      );
     } catch (Exception e) {
       LOG.error("Upgarding of DB is failed. ", e);
       throw new IllegalStateException(e);

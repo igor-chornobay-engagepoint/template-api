@@ -29,11 +29,11 @@ project.ext {
     projectGroup = 'gov.ca.cwds.template'
     projectDockerGroup = 'cwds'
     projectDockerAppName = 'template-api'
-    projectMajorVersion = '0.4.3'
+    projectMajorVersion = '0.1.0'
     projectVersion = projectMajorVersion + '-SNAPSHOT'
     //projectVersion = projectMajorVersion
     dropwizardVersion = '1.1.0'
-    coreApiVersion = '3.6.438'
+    coreApiVersion = '3.6'
     mapstructVersion = '1.1.0.Final'
     mainClass = 'gov.ca.cwds.template.TemplateApiApplication'
 }
@@ -98,6 +98,8 @@ dependencies {
         exclude group: 'org.glassfish.jersey.core'
         exclude group: 'gov.ca.cwds.api', module:'shiro-security'
     }
+
+    compile group: 'gov.ca.cwds.api', name:'shiro-security', version: '0.4.2-SNAPSHOT'
 
     compile group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.1'

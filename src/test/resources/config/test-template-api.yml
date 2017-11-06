@@ -1,16 +1,10 @@
-applicationName: CWDS TEMPLATE API
+applicationName: Template API
 version: ${APP_VERSION:-local}
 
 server:
   applicationConnectors:
   - type: http
     port: 8080
-  - type: https
-    port: 8443
-    keyStorePath: ${KEY_STORE_FILE:-./config/testKeyStore.jks}
-    keyStorePassword: ${KEY_STORE_PASSWORD:-testPass}
-    keyStoreType: JKS
-    supportedProtocols: [TLSv1, TLSv1.1, TLSv1.2]
   adminConnectors:
   - type: http
     port: 9081
@@ -24,12 +18,11 @@ shiro:
 swagger:
   templateName: swagger.mustache
   assetsPath: /static
-  resourcePackage: gov.ca.cwds.template.web.rest
-  title: CWDS TEMPLATE API
-  description: RESTful TEMPLATE API.
+  resourcePackage: gov.ca.cwds.formss.web.rest
+  title: CWDS FORMS API
+  description: RESTful API definitions for the Forms Generation System.
   logo: images/CWDS-API-Logo-Horizontal.png
-  loginUrl: ${LOGIN_URL:-http://localhost:8080/authn/login/}
-  logoutUrl: ${LOGOUT_URL:-http://localhost:8080/perry/authn/logout}
+  loginUrl: ${LOGIN_URL:-http://localhost:8090/authn/login}
   showSwagger: ${SHOW_SWAGGER:-true}
   jsonUrl: ${SWAGGER_JSON_URL:-http://localhost:8080/swagger.json}
   callbackUrl: ${SWAGGER_CALLBACK_URL:-http://localhost:8080/swagger}
@@ -37,25 +30,23 @@ swagger:
 upgradeDbOnStart: ${UPGRADE_DB_ON_START:-true}
 
 templateDataSourceFactory:
-  driverClass: org.postgresql.Driver
-  user: ${DB_TEMPLATE_USER:-postgres}
-  password: ${DB_TEMPLATE_PASSWORD:-postgres}
-  url: ${DB_TEMPLATE_JDBC_URL:-jdbc:postgresql://localhost:5432/postgres}
-  validationQuery: "select count(*) from ${DB_TEMPLATE_DEFAULT_SCHEMA:-template}.template_instance"
+  driverClass: org.h2.Driver
+  user: sa
+  password:
+  url: jdbc:h2:mem:formsDb;INIT=create schema if not exists templateDb\;set schema templateDb
+  validationQuery: "/* MyService Health Check */ SELECT 1"
   logValidationErrors: true
-  initialSize: ${DB_TEMPLATE_CP_INITIAL_SIZE:-2}
-  minSize: ${DB_TEMPLATE_CP_MIN_SIZE:-2}
-  maxSize: ${DB_TEMPLATE_CP_MAX_SIZE:-8}
+  initialSize: ${DB_FORMS_CP_INITIAL_SIZE:-2}
+  minSize: ${DB_FORMS_CP_MIN_SIZE:-2}
+  maxSize: ${DB_FORMS_CP_MAX_SIZE:-8}
   minIdleTime: 1 minute
   properties:
-      hibernate.dialect: gov.ca.cwds.template.persistence.hibernate.dialect.JsonbSupportPostgreSQL9Dialect
+      hibernate.dialect: org.hibernate.dialect.H2Dialect
       hibernate.id.new_generator_mappings: false
-      hibernate.show_sql: true
-      hibernate.default_schema: ${DB_TEMPLATE_DEFAULT_SCHEMA:-template}
-      hibernate.cache.use_second_level_cache: false
+      hibernate.show_sql: false
+      hibernate.cache.use_second_level_cache: true
       hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
-      hibernate.cache.use_query_cache: false
-      hibernate.connection.autocommit: false
+      hibernate.cache.use_query_cache: true
 
 webSecurity:
   httpResponseSecurityHeaders:
@@ -72,19 +63,19 @@ webSecurity:
     Content-Security-Policy: default-src 'self' 'unsafe-inline';
 
 logging:
-  level: ${LOGLEVEL:-DEBUG}
+  level: ${LOGLEVEL:-INFO}
   loggers:
     "org.hibernate.SQL":
-      level: DEBUG
+      level: INFO
     "org.hibernate.type.descriptor.sql":
-      level: DEBUG
+      level: INFO
     "AUDIT":
       level: ALL
     "gov.ca.cwds":
       level: DEBUG
   appenders:
     - type: console
-      threshold: DEBUG
+      threshold: INFO
       timeZone: UTC
       target: stdout
       logFormat: '[%X{remoteAddress}] [%date{ISO8601}] [%level] [%thread] [%X{uniqueId}] [%logger:] [%message]%n'

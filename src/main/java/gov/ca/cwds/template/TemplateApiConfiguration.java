@@ -8,7 +8,7 @@ public class TemplateApiConfiguration extends MinimalApiConfiguration {
 
   private DataSourceFactory templateDataSourceFactory;
 
-  private boolean upgardeDbOnStart = false;
+  private boolean upgradeDbOnStart = false;
 
   @JsonProperty
   public DataSourceFactory getTemplateDataSourceFactory() {
@@ -21,11 +21,11 @@ public class TemplateApiConfiguration extends MinimalApiConfiguration {
 
   @JsonProperty
   public boolean isUpgradeDbOnStart() {
-    return upgardeDbOnStart;
+    return upgradeDbOnStart;
   }
 
-  public void setUpgardeDbOnStart(boolean upgardeDbOnStart) {
-    this.upgardeDbOnStart = upgardeDbOnStart;
+  public void setUpgradeDbOnStart(boolean upgradeDbOnStart) {
+    this.upgradeDbOnStart = upgradeDbOnStart;
   }
 
 }
