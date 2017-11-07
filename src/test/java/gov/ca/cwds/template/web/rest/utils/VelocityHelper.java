@@ -9,7 +9,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 /**
- * @author CWDS TPT-2 Team
+ * @author CWDS TPT-3 Team
  */
 public final class VelocityHelper {
 

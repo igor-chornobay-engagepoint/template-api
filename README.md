@@ -1,6 +1,6 @@
 # CWDS TEMPLATE API
 
-The CWDS API provides Forms Generation RESTful services for the CWDS CALS Digital Service.
+The CWDS TEMPLATE API provides RESTful services for the CWDS Digital Service.
 
 ## Wiki
 

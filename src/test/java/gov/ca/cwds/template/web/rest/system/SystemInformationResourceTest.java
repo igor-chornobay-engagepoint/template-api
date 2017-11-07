@@ -13,6 +13,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Created by CWDS TPT-3 Team
+ */
 public class SystemInformationResourceTest extends BaseApiIntegrationTest {
 
   @Test
@@ -25,10 +28,10 @@ public class SystemInformationResourceTest extends BaseApiIntegrationTest {
     assertNotNull(systemInformationDTO.getVersion());
     assertNotNull(systemInformationDTO.getDeadlocks());
 
-    assertDataSource(systemInformationDTO.getTemplateDb());
+    assertDeadlocks(systemInformationDTO.getDeadlocks());
   }
 
-  public void assertDataSource(HealthCheckResultDTO healthCheckResultDTO) {
+  public void assertDeadlocks(HealthCheckResultDTO healthCheckResultDTO) {
     assertNotNull(healthCheckResultDTO);
     assertTrue(healthCheckResultDTO.isHealthy());
   }

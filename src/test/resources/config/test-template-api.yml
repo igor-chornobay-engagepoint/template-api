@@ -4,7 +4,7 @@ version: ${APP_VERSION:-local}
 server:
   applicationConnectors:
   - type: http
-    port: 8080
+    port: 8090
   adminConnectors:
   - type: http
     port: 9081
@@ -24,29 +24,6 @@ swagger:
   logo: images/CWDS-API-Logo-Horizontal.png
   loginUrl: ${LOGIN_URL:-http://localhost:8090/authn/login}
   showSwagger: ${SHOW_SWAGGER:-true}
-  jsonUrl: ${SWAGGER_JSON_URL:-http://localhost:8080/swagger.json}
-  callbackUrl: ${SWAGGER_CALLBACK_URL:-http://localhost:8080/swagger}
-
-upgradeDbOnStart: ${UPGRADE_DB_ON_START:-true}
-
-templateDataSourceFactory:
-  driverClass: org.h2.Driver
-  user: sa
-  password:
-  url: jdbc:h2:mem:formsDb;INIT=create schema if not exists templateDb\;set schema templateDb
-  validationQuery: "/* MyService Health Check */ SELECT 1"
-  logValidationErrors: true
-  initialSize: ${DB_FORMS_CP_INITIAL_SIZE:-2}
-  minSize: ${DB_FORMS_CP_MIN_SIZE:-2}
-  maxSize: ${DB_FORMS_CP_MAX_SIZE:-8}
-  minIdleTime: 1 minute
-  properties:
-      hibernate.dialect: org.hibernate.dialect.H2Dialect
-      hibernate.id.new_generator_mappings: false
-      hibernate.show_sql: false
-      hibernate.cache.use_second_level_cache: true
-      hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
-      hibernate.cache.use_query_cache: true
 
 webSecurity:
   httpResponseSecurityHeaders:

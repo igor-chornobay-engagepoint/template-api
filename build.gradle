@@ -95,6 +95,7 @@ dependencies {
 // Exclude transitive dependencies.
     compile (group: 'gov.ca.cwds.api', name: 'api-core', version: coreApiVersion , changing: true) {
         exclude group: 'org.glassfish.jersey.core'
+        exclude group: 'gov.ca.cwds.api', module:'shiro-security'
     }
 
     compile group: 'gov.ca.cwds.api', name:'shiro-security', version: '0.4.2-SNAPSHOT'

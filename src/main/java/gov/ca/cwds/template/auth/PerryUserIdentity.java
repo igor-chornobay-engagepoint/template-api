@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.ca.cwds.security.shiro.realms.PerryAccount;
 
 /**
- * @author CWDS CALS API Team
+ * @author CWDS TPT-3 API Team
  */
 public class PerryUserIdentity extends PerryAccount {
 

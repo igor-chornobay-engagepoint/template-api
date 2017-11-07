@@ -12,7 +12,7 @@ import org.json.JSONException;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
 /**
- * @author CWDS TPT-2 Team
+ * @author CWDS TPT-3 Team
  */
 
 public final class AssertFixtureUtils {

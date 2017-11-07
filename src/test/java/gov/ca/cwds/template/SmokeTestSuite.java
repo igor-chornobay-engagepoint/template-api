@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- * @author CWDS CALS API Team
+ * @author CWDS TPT-3 API Team
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

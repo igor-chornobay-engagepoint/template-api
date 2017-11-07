@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by leonid.marushevskiy on 6/30/2017.
+ * Created by CWDS TPT-3 Team.
  */
 public class LoggingFilter implements ClientRequestFilter, ClientResponseFilter {
 
