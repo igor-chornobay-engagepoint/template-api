@@ -18,9 +18,9 @@ shiro:
 swagger:
   templateName: swagger.mustache
   assetsPath: /static
-  resourcePackage: gov.ca.cwds.formss.web.rest
-  title: CWDS FORMS API
-  description: RESTful API definitions for the Forms Generation System.
+  resourcePackage: gov.ca.cwds.template.web.rest
+  title: CWDS TEMPLATE API
+  description: RESTful TEMPLATE API.
   logo: images/CWDS-API-Logo-Horizontal.png
   loginUrl: ${LOGIN_URL:-http://localhost:8090/authn/login}
   showSwagger: ${SHOW_SWAGGER:-true}
